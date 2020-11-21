@@ -70,7 +70,7 @@ const delTarefa = (req, res) => {
       })
     }else{
       res.status(200).send({
-        message: 'Não há tafera para ser removida',
+        message: 'Não há tafera para ser removida.',
         status: "EMPTY"
       })
     }
