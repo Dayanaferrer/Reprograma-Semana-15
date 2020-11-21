@@ -1,3 +1,5 @@
+const { JsonWebTokenError } = require('jsonwebtoken');
+
 const tarefas = require('../models/tarefas')
 const SECRET = process.env.SECRET
 const jwt = require('jsonwebtoken')
@@ -14,7 +16,7 @@ const getAll = (req, res) => {
 
   jwt.verify(token, SECRET, function(erro) {
     if (erro) {
-      return res.status(403).send('Nope')
+      return res.status(403).send('Acesso negado: Token inválido!')
     }
 
     tarefas.find(function(err, tarefas){
@@ -35,20 +37,6 @@ const getById = (req, res) => {
 
     res.status(200).send(tarefas)
   })
-}
-
-const postTarefa = (req, res) => {
-  console.log(req.body)
-
-  let tarefa = new tarefas(req.body)
-
-  tarefa.save(function(err){
-    if(err) {
-      res.status(500).send({ message: err.message })
-    }
-    res.status(201).send(tarefa.toJSON())
-  })
-
 }
 
 const delTarefa = (req, res) => {
@@ -76,12 +64,39 @@ const delTarefa = (req, res) => {
     }
   })
 }
+const postTarefa = (req, res) => {
+  console.log(req.body)
+
+  let tarefa = new tarefas(req.body)
+
+  tarefa.save(function(err){
+    if(err) {
+      res.status(500).send({ message: err.message })
+    }
+    res.status(201).send(tarefa.toJSON())
+  })
+
+}
+
 
 const delTarefaConcluida = (req, res) => {
    try {
     tarefas.deleteMany({ concluido: true }, function (err) {
         if (!err) {
             res.status(200).send({ message: 'Tarefas |concluidas| removidas com sucesso', status: "SUCCESS" })
+        }
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(424).send({ message: err.message })
+  }
+}
+
+const delTarefaConcluida = (req, res) => {
+   try {
+    tarefas.deleteMany({ concluido: true }, function (err) {
+        if (!err) {
+            return res.status(200).send({ message: 'Tarefas concluidas removidas com sucesso', status: "SUCCESS" })
         }
     })
   } catch (err) {
@@ -107,6 +122,7 @@ const putTarefa = (req, res) => {
   })
 
 }
+
 
 module.exports = {
   getAll,

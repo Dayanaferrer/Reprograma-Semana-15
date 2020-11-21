@@ -11,6 +11,6 @@ const tarefaSchema = new mongoose.Schema({
     versionKey: false
 })
 
-const tarefas = mongoose.model('tasks', tarefaSchema)
+const tarefas = mongoose.model('tarefas', tarefaSchema)
 
 module.exports = tarefas

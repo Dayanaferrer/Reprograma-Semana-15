@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
-const colaboradorasSchema = new mongoose.Schema({
+const colaboradoraSchema = new mongoose.Schema({
+    id : { type : Number},
     name: { type: String },
     email: { type: String },
     password: { type: String }
@@ -9,6 +10,6 @@ const colaboradorasSchema = new mongoose.Schema({
     versionKey: false
 })
 
-const colaboradoras = mongoose.model('contributors', colaboradorasSchema)
+const colaboradoras = mongoose.model('colaboradoras', colaboradoraSchema)
 
 module.exports = colaboradoras
